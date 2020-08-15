@@ -70,10 +70,41 @@ const startApp = async () => {
         message: 'What file do you want to mark?',
         default: 'test.jpg',
     }, {
+        name: 'imageChanges',
+        message: 'Do you want to edit your image?',
+        type: 'confirm',
+    }, {
         name: 'watermarkType',
         type: 'list',
         choices: ['Text watermark', 'Image watermark'],
     }]);
+
+    if (options.imageChanges) {
+        const image = await Jimp.read('./img/' + options.inputImage);
+
+        const changesList = await inquirer.prompt([{
+            name: 'changeType',
+            type: 'list',
+            choices: ['make image brighter', 'increase contrast', 'make image b&w', 'invert image'],
+        }]);
+
+        if (changesList.changeType === 'make image brighter') {
+            image.brightness(0.3);
+            await image.quality(100).writeAsync('./img/' + options.inputImage);
+        }
+        if (changesList.changeType === 'increase contrast') {
+            image.contrast(0.3);
+            await image.quality(100).writeAsync('./img/' + options.inputImage);
+        }
+        if (changesList.changeType === 'make image b&w') {
+            image.greyscale();
+            await image.quality(100).writeAsync('./img/' + options.inputImage);
+        }
+        if (changesList.changeType === 'invert image') {
+            image.invert();
+            await image.quality(100).writeAsync('./img/' + options.inputImage);
+        }
+    }
 
     //ask about path to watermark image or text to watermark text
 
