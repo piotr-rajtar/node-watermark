@@ -1,0 +1,12 @@
+{
+  "name": "node-watermark",
+  "version": "1.0.0",
+  "main": "app.js",
+  "repository": "git@github.com:piotr-rajtar/node-watermark.git",
+  "author": "Piotr Rajtar <piotrek.rajtar@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "inquirer": "^7.3.3",
+    "jimp": "^0.16.0"
+  }
+}
