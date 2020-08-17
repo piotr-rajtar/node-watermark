@@ -1,6 +1,8 @@
 const Jimp = require('jimp');
 const inquirer = require('inquirer');
 const fs = require('fs');
+const watermarkChoices = ['Text watermark', 'Image watermark'];
+const imageEditChoices = ['make image brighter', 'increase contrast', 'make image b&w', 'invert image'];
 
 const addTextWatermarkToImage = async function(inputFile, outputFile, text) {
     try {
@@ -76,7 +78,7 @@ const startApp = async () => {
     }, {
         name: 'watermarkType',
         type: 'list',
-        choices: ['Text watermark', 'Image watermark'],
+        choices: [watermarkChoices[0], watermarkChoices[1]],
     }]);
 
     if (options.imageChanges) {
@@ -85,22 +87,22 @@ const startApp = async () => {
         const changesList = await inquirer.prompt([{
             name: 'changeType',
             type: 'list',
-            choices: ['make image brighter', 'increase contrast', 'make image b&w', 'invert image'],
+            choices: [imageEditChoices[0], imageEditChoices[1], imageEditChoices[2], imageEditChoices[3]],
         }]);
 
-        if (changesList.changeType === 'make image brighter') {
+        if (changesList.changeType === imageEditChoices[0]) {
             image.brightness(0.3);
             await image.quality(100).writeAsync('./img/' + options.inputImage);
         }
-        if (changesList.changeType === 'increase contrast') {
+        if (changesList.changeType === imageEditChoices[1]) {
             image.contrast(0.3);
             await image.quality(100).writeAsync('./img/' + options.inputImage);
         }
-        if (changesList.changeType === 'make image b&w') {
+        if (changesList.changeType === imageEditChoices[2]) {
             image.greyscale();
             await image.quality(100).writeAsync('./img/' + options.inputImage);
         }
-        if (changesList.changeType === 'invert image') {
+        if (changesList.changeType === imageEditChoices[3]) {
             image.invert();
             await image.quality(100).writeAsync('./img/' + options.inputImage);
         }
@@ -108,7 +110,7 @@ const startApp = async () => {
 
     //ask about path to watermark image or text to watermark text
 
-    if (options.watermarkType === 'Text watermark') {
+    if (options.watermarkType === watermarkChoices[0]) {
         const text = await inquirer.prompt([{
             name: 'value',
             type: 'input',
